@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Save — Korean skincare, priced honestly</title>
+<meta name="description" content="K-Save is a mobile app that shows the true delivered cost of Korean skincare — price + shipping + tariff — across StyleVana, YesStyle, Jolse, Olive Young Global and StyleKorean, ranked by what actually leaves your card.">
+<meta property="og:title" content="K-Save — Sticker prices lie.">
+<meta property="og:description" content="The true delivered cost of Korean skincare, compared across five stores. iOS &amp; Android, launching 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Black+Han+Sans&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#e4002b; --red-deep:#b80023; --ink:#141414; --paper:#ffffff;
+    --blush:#ffd9e2; --blush-deep:#f6becb; --gold:#c9a227; --gold-deep:#a8861a;
+    --grease:#1c1c1c; --grease-red:#ff5c74;
+    --mono:'Fragment Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --sans:'Archivo',system-ui,-apple-system,'Helvetica Neue',sans-serif;
+    --display:'Anton','Arial Narrow',system-ui,sans-serif;
+    --hangul:'Black Han Sans','Apple SD Gothic Neo',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  html,body{overflow-x:clip}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    font-family:var(--sans);color:var(--ink);background:var(--paper);
+    font-size:1.0625rem;line-height:1.55;caret-color:var(--red);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--ink);color:var(--blush)}
+  .field-red ::selection,.field-ink ::selection{background:var(--paper);color:var(--red)}
+  body::-webkit-scrollbar{width:14px;background:var(--paper)}
+  body::-webkit-scrollbar-thumb{background:var(--red);border:4px solid var(--paper);border-radius:8px}
+  html{scrollbar-color:var(--red) var(--paper);scrollbar-width:thin}
+  :focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:2px}
+  .field-red :focus-visible,.field-ink :focus-visible{outline-color:var(--gold)}
+  .skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:.6rem 1rem;z-index:99;font-weight:700}
+  .skip:focus{left:0}
+  img,svg{display:block;max-width:100%}
+  a{color:inherit}
+
+  /* ---------- shared magazine bones ---------- */
+  .wrap{max-width:76rem;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+  .display{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
+  .hangul{font-family:var(--hangul);font-weight:400;word-break:keep-all}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .price{font-variant-numeric:tabular-nums lining-nums}
+  .field-red{background:var(--red);color:#fff}
+  .field-ink{background:var(--ink);color:#fff}
+  .field-blush{background:var(--blush);color:var(--ink)}
+  section{position:relative}
+
+  /* ---------- masthead ---------- */
+  .masthead{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+    padding-block:1rem;border-bottom:3px solid var(--paper)}
+  .masthead .wordmark{font-family:var(--display);font-size:1.9rem;letter-spacing:.02em;color:#fff;text-decoration:none;display:flex;align-items:baseline;gap:.55rem;white-space:nowrap}
+  .wordmark .dot{width:.55em;height:.55em;background:#fff;border-radius:50%;align-self:center}
+  .masthead .issue{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-align:right}
+  .masthead .issue span{display:block}
+
+  /* ---------- hero ---------- */
+  .hero{overflow:clip}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(1.5rem,4vw,4rem);
+    align-items:center;padding-block:clamp(2.5rem,6vw,5rem) clamp(3rem,7vw,5.5rem)}
+  .cover-line{font-size:clamp(3.4rem,9.5vw,6rem);color:#fff;text-wrap:balance}
+  .cover-line .under{position:relative;display:inline-block}
+  .cover-line .under svg{position:absolute;left:-2%;bottom:-.12em;width:104%;height:.35em;overflow:visible}
+  .dek{margin-top:1.4rem;font-size:clamp(1.05rem,1.6vw,1.25rem);line-height:1.5;max-width:34rem;font-weight:500}
+  .dek .hangul{font-size:.95em}
+  .hero-actions{margin-top:2.2rem;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap}
+  .sticker-btn{display:inline-block;background:var(--paper);color:var(--red);font-family:var(--display);
+    font-size:1.15rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;
+    padding:.85rem 1.5rem .75rem;border-radius:.35rem;transform:rotate(-2deg);
+    box-shadow:0 6px 18px rgba(0,0,0,.28);transition:transform .25s cubic-bezier(.2,.9,.3,1.4),box-shadow .25s ease}
+  .sticker-btn:hover{transform:rotate(0deg) translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.32)}
+  .launch-line{font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:#fff}
+
+  /* hero exhibit */
+  .exhibit{position:relative;justify-self:center;width:min(100%,24rem)}
+  .exhibit .burst{position:absolute;top:-2.6rem;right:-1.6rem;width:8.6rem;z-index:2;filter:drop-shadow(0 6px 12px rgba(0,0,0,.25))}
+  .exhibit-caption{margin-top:.9rem;font-family:var(--mono);font-size:.72rem;line-height:1.6;color:#fff;opacity:.92}
+
+  /* ---------- grease pencil ---------- */
+  .grease{fill:none;stroke:var(--grease);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+  .grease.on-red{stroke:var(--ink)}
+  .grease.thin{stroke-width:5}
+  .js .draw .grease{stroke-dasharray:var(--len,600);stroke-dashoffset:var(--len,600)}
+  .js .draw.is-in .grease{animation:drawstroke .7s cubic-bezier(.5,0,.2,1) forwards}
+  .js .draw.is-in .grease.g2{animation-delay:.55s}
+  .js .draw.is-in .grease.g3{animation-delay:1.05s}
+  @keyframes drawstroke{to{stroke-dashoffset:0}}
+  .js .stamp{opacity:0;transform:scale(1.5) rotate(8deg)}
+  .js .stamp.is-in{animation:stampin .45s cubic-bezier(.2,.9,.3,1.2) forwards}
+  @keyframes stampin{to{opacity:1;transform:scale(1) rotate(0deg)}}
+  @media (prefers-reduced-motion:reduce){
+    .js .draw .grease{stroke-dasharray:none;stroke-dashoffset:0;animation:none}
+    .js .stamp{opacity:1;transform:none;animation:none}
+  }
+
+  /* ---------- spread headers ---------- */
+  .spread{padding-block:clamp(3.5rem,8vw,6.5rem)}
+  .spread-head{font-size:clamp(2.1rem,5vw,3.6rem);max-width:22ch;text-wrap:balance}
+  .spread-intro{margin-top:1.1rem;max-width:62ch;font-size:1.05rem}
+  .rule{border:none;border-top:3px solid currentColor;margin-bottom:clamp(1.5rem,3vw,2.5rem)}
+
+  /* ---------- receipts / the math ---------- */
+  .receipts{margin-top:clamp(2rem,4vw,3rem);display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.25rem,3vw,2.5rem);align-items:start}
+  .receipt{background:var(--paper);border:2px solid var(--ink);border-radius:.4rem;position:relative;
+    box-shadow:0 10px 26px rgba(20,20,20,.12)}
+  .receipt-head{padding:1rem 1.25rem .8rem;border-bottom:2px dashed var(--ink);display:flex;justify-content:space-between;align-items:baseline;gap:.75rem}
+  .receipt-head strong{font-family:var(--display);font-size:1.35rem;letter-spacing:.02em;text-transform:uppercase;font-weight:400}
+  .origin-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:#fff;padding:.2rem .5rem;border-radius:.2rem;white-space:nowrap}
+  .receipt table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.95rem}
+  .receipt td{padding:.65rem 1.25rem;border-bottom:1px solid rgba(20,20,20,.14)}
+  .receipt td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  .receipt tr.total td{border-bottom:none;padding-block:.9rem;font-weight:700;font-size:1.35rem}
+  .receipt tr.total td:last-child{padding-right:1.9rem}
+  .receipt .total-figure{position:relative;display:inline-block;padding:.15em .3em}
+  .receipt .total-figure svg{position:absolute;inset:-16% auto auto -10%;width:126%;max-width:none;height:132%;overflow:visible}
+  .receipt-foot{padding:0 1.25rem 1.1rem;font-size:.8rem;font-family:var(--mono);line-height:1.6;color:#3c3c3c}
+  .receipt .seal{position:absolute;top:-1.9rem;right:-1.1rem;width:6.8rem}
+  .receipt.win .receipt-head{padding-right:6rem}
+  .example-note{margin-top:1.6rem;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;
+    display:inline-block;background:var(--ink);color:#fff;padding:.5rem .8rem;border-radius:.25rem}
+  .pull{margin-top:clamp(2.5rem,5vw,3.5rem);font-size:clamp(1.6rem,3.4vw,2.6rem);max-width:24ch;color:var(--red);text-wrap:balance}
+
+  /* retailer strip */
+  .rules-strip{margin-top:clamp(2.5rem,5vw,3.5rem);display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem}
+  .rule-chip{border:2px solid var(--ink);border-radius:.4rem;padding:.85rem .9rem;background:var(--paper)}
+  .rule-chip strong{display:block;font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.02em;font-size:1.02rem}
+  .rule-chip .mono{display:block;margin-top:.45rem;font-size:.72rem;line-height:1.7;color:#3c3c3c}
+  .rules-caption{margin-top:.9rem;font-family:var(--mono);font-size:.72rem;color:#3c3c3c}
+
+  /* ---------- how it works ---------- */
+  .steps{margin-top:clamp(2rem,4vw,3rem);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,3vw,2.5rem)}
+  .step{border-top:3px solid var(--ink);padding-top:1.1rem}
+  .step .no{font-family:var(--display);font-size:3.4rem;line-height:1;color:var(--red)}
+  .step h3{font-size:1.25rem;font-weight:700;margin-top:.6rem;letter-spacing:-.01em}
+  .step p{margin-top:.5rem;font-size:.98rem;max-width:30ch}
+  .step .glyph{margin-top:1rem;width:4.6rem;height:4.6rem}
+  .glyph *{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .glyph .accent{stroke:var(--red)}
+
+  /* ---------- routine ---------- */
+  .routine .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(2rem,5vw,4rem);align-items:start}
+  .awards{list-style:none;border:2px solid var(--ink);border-radius:.4rem;background:var(--paper);box-shadow:0 10px 26px rgba(20,20,20,.1)}
+  .awards li{display:flex;align-items:center;gap:1rem;padding:.95rem 1.25rem;border-bottom:1px solid rgba(20,20,20,.14)}
+  .awards li:last-child{border-bottom:none}
+  .awards .medal{width:2.1rem;flex:none}
+  .awards .slot{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.05rem;min-width:9.5rem}
+  .awards .note{font-size:.85rem;color:#3c3c3c}
+  .editors-note{margin-top:1.6rem;border:2px solid var(--ink);border-radius:.4rem;padding:1.1rem 1.25rem;background:var(--paper);position:relative}
+  .editors-note h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:1.05rem;letter-spacing:.03em}
+  .editors-note p{margin-top:.45rem;font-size:.92rem}
+  .editors-note .corner-stamp{position:absolute;top:-.85rem;right:1rem;background:var(--paper);border:2px solid var(--red);color:var(--red);
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .55rem;border-radius:.2rem;transform:rotate(2deg)}
+
+  /* ---------- partners ---------- */
+  .partners .grid{margin-top:clamp(2rem,4vw,3rem);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1.5rem,3vw,2.5rem)}
+  .fact{border-top:2px solid var(--gold);padding-top:1rem}
+  .fact h3{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.03em;font-size:1.15rem;color:var(--gold)}
+  .fact p{margin-top:.5rem;font-size:.98rem;color:#f2f2f2;max-width:52ch}
+  .partners .pledge{margin-top:clamp(2.5rem,5vw,3.5rem);font-size:clamp(1.7rem,3.6vw,2.7rem);max-width:24ch;color:#fff;text-wrap:balance}
+  .partners .pledge .gold{color:var(--gold)}
+  .partner-names{margin-top:2rem;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:#cfcfcf;line-height:2}
+
+  /* ---------- footer ---------- */
+  footer{padding-block:2.5rem 3rem}
+  footer .wrap{display:grid;gap:1rem}
+  .colophon-rule{border:none;border-top:3px solid var(--ink)}
+  footer .wordmark-s{font-family:var(--display);font-size:1.3rem;text-transform:uppercase}
+  footer p{font-size:.85rem;color:#3c3c3c;max-width:70ch}
+  footer .mono{font-size:.75rem;color:#3c3c3c}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;padding-top:2rem}
+    .exhibit{width:min(100%,20rem);margin-top:1rem}
+    .exhibit .burst{top:-2rem;right:-.5rem;width:7rem}
+    .receipts{grid-template-columns:1fr;gap:2.6rem}
+    .receipt .seal{top:-1.6rem;right:-.4rem}
+    .rules-strip{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:1fr}
+    .routine .wrap{grid-template-columns:1fr}
+    .partners .grid{grid-template-columns:1fr}
+    .masthead .issue span:last-child{display:none}
+  }
+  @media (max-width:560px){
+    .masthead{flex-wrap:wrap;row-gap:.15rem}
+    .masthead .issue{text-align:left}
+  }
+  @media (max-width:480px){
+    .rules-strip{grid-template-columns:1fr}
+    .cover-line{font-size:clamp(3rem,16vw,3.6rem)}
+  }
+</style>
+</head>
+<body>
+<!--
+THESIS: A Korean glossy beauty-magazine exposé that investigates the real price of K-beauty
+and circles the answer in grease pencil; it refuses the category default of a centered
+headline over a phone mockup with a feature grid.
+OWN-WORLD: Pigment red #E4002B, glossy white and ink fields committed at page scale, blush
+#FFD9E2 spread, seal gold; Anton cover lines + Black Han Sans hangul + Archivo text +
+Fragment Mono tabular price math; grease-pencil strikes/circles, stamped award seals,
+tilted sticker buttons, receipt anatomy item+ship+tariff=total everywhere.
+STORY: The visitor learns sticker prices lie, watches the delivered-cost math beat the
+cheaper-looking sticker, understands K-Save ranks five stores by what leaves your card
+(never commission), and leaves knowing it launches 2026 on iOS/Android.
+FIRST VIEWPORT: Red masthead bar (K-SAVE wordmark left, issue line right); left column:
+STICKER PRICES LIE. cover line with grease underline, dek, white sticker-button "See the
+math" + launch line; right column: essence-bottle cut-out exhibit, sticker $13.60 struck
+out, delivered $23.63 circled, gold burst seal "5 stores · 1 true price" top-right.
+FORM: K-beauty glossy awards/exposé spread — candidate 6 of 7 on my ordered list; seed 09c0e68f; code-led.
+Signature interaction: grease-pencil strokes draw themselves on scroll; seals stamp in.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="field-red">
+  <div class="wrap masthead">
+    <a class="wordmark" href="#"><span>K-SAVE</span><span class="dot" aria-hidden="true"></span><span class="hangul" style="font-size:1.05rem" lang="ko">케이세이브</span></a>
+    <p class="issue"><span>Pre-launch issue Nº 001</span><span>Korean skincare, priced honestly</span></p>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero field-red" aria-labelledby="cover">
+    <div class="wrap">
+      <div>
+        <h1 id="cover" class="display cover-line">Sticker prices <span class="under">lie.<svg viewBox="0 0 200 24" aria-hidden="true" class="draw" data-draw><path class="grease on-red" style="--len:210" d="M4 14 C 60 8, 140 6, 196 12"/></svg></span></h1>
+        <p class="dek">The number that matters is the one that leaves your card: price <em>plus</em> shipping <em>plus</em> tariff. K-Save compares that delivered total across five Korean-skincare stores (<span class="hangul" lang="ko">진짜 가격</span>, the real price) and sends you to whichever store actually wins.</p>
+        <div class="hero-actions">
+          <a class="sticker-btn" href="#math">See the math ↓</a>
+          <p class="launch-line">iOS &amp; Android · launching 2026</p>
+        </div>
+      </div>
+
+      <figure class="exhibit">
+        <svg class="stamp burst" data-stamp viewBox="0 0 140 140" role="img" aria-label="Seal: five stores, one true price">
+          <path d="M70 4 79 18 94 9 97 26 114 22 111 39 128 41 119 55 133 63 119 71 128 85 111 87 114 104 97 100 94 117 79 108 70 122 61 108 46 117 43 100 26 104 29 87 12 85 21 71 7 63 21 55 12 41 29 39 26 22 43 26 46 9 61 18Z" fill="#c9a227"/>
+          <circle cx="70" cy="63" r="40" fill="none" stroke="#141414" stroke-width="2"/>
+          <text x="70" y="52" text-anchor="middle" font-family="Anton, sans-serif" font-size="20" fill="#141414">5</text>
+          <text x="70" y="66" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="9" letter-spacing="1" fill="#141414">STORES</text>
+          <text x="70" y="80" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="8.2" letter-spacing=".6" fill="#141414">1 TRUE PRICE</text>
+        </svg>
+
+        <svg viewBox="0 0 380 430" role="img" aria-label="Illustration: an essence bottle whose $13.60 sticker price is crossed out in grease pencil; the delivered total $23.63 is circled as the real price">
+          <!-- bottle cut-out on glossy card -->
+          <rect x="24" y="18" width="332" height="394" rx="10" fill="#ffffff"/>
+          <rect x="24" y="18" width="332" height="394" rx="10" fill="none" stroke="#141414" stroke-width="2.5"/>
+          <!-- dropper cap -->
+          <rect x="168" y="52" width="44" height="34" rx="6" fill="#141414"/>
+          <rect x="181" y="86" width="18" height="26" fill="#141414"/>
+          <!-- bottle body -->
+          <path d="M142 118 h96 a10 10 0 0 1 10 10 v170 a34 34 0 0 1 -34 34 h-48 a34 34 0 0 1 -34 -34 v-170 a10 10 0 0 1 10 -10 Z" fill="#ffd9e2" stroke="#141414" stroke-width="2.5"/>
+          <!-- bottle label -->
+          <rect x="150" y="160" width="80" height="110" rx="4" fill="#ffffff" stroke="#141414" stroke-width="2"/>
+          <text x="190" y="187" text-anchor="middle" font-family="Anton, sans-serif" font-size="17" fill="#141414">ESSENCE</text>
+          <text x="190" y="207" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="10" fill="#141414">Nº 96</text>
+          <line x1="158" y1="220" x2="222" y2="220" stroke="#141414" stroke-width="1.6"/>
+          <text x="190" y="240" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="9" fill="#3c3c3c">100 ml · KOREA</text>
+          <text x="190" y="256" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="9" fill="#3c3c3c">ILLUSTRATION</text>
+          <!-- sticker price tag -->
+          <g data-strike-target>
+            <rect x="46" y="120" width="108" height="54" rx="6" fill="#ffffff" stroke="#141414" stroke-width="2.2" transform="rotate(-4 100 147)"/>
+            <text x="100" y="143" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="11" fill="#3c3c3c" transform="rotate(-4 100 147)">STICKER</text>
+            <text x="100" y="165" text-anchor="middle" font-family="Anton, sans-serif" font-size="24" fill="#141414" transform="rotate(-4 100 147)">$13.60</text>
+          </g>
+          <!-- delivered total plate -->
+          <g>
+            <rect x="196" y="316" width="152" height="74" rx="8" fill="#141414" transform="rotate(2 272 353)"/>
+            <text x="272" y="345" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="11" fill="#ffd9e2" transform="rotate(2 272 353)">DELIVERED</text>
+            <text x="272" y="376" text-anchor="middle" font-family="Anton, sans-serif" font-size="30" fill="#ffffff" transform="rotate(2 272 353)">$23.63</text>
+          </g>
+          <!-- grease annotations -->
+          <g class="draw" data-draw>
+            <path class="grease" style="--len:130" d="M52 158 C 84 138, 118 132, 150 128"/>
+            <path class="grease g2 thin" style="--len:130" d="M56 132 C 88 142, 120 152, 148 158"/>
+            <path class="grease g3" style="--len:520" d="M262 306 C 322 300, 366 322, 362 354 C 358 390, 300 404, 250 398 C 204 392, 180 372, 186 346 C 192 320, 226 306, 268 304"/>
+          </g>
+          <!-- handwritten note -->
+          <text x="66" y="300" font-family="'Black Han Sans', sans-serif" font-size="19" fill="#141414" transform="rotate(-6 60 300)">진짜 가격 →</text>
+          <text x="60" y="322" font-family="Fragment Mono, monospace" font-size="10.5" fill="#141414" transform="rotate(-6 60 306)">the real price</text>
+        </svg>
+        <figcaption class="exhibit-caption">Worked example, not a live quote: $13.60 item + $7.99 shipping + $2.04 tariff (15%, ships from HK) = <strong class="price">$23.63</strong> delivered to the US. Bottle is an illustration.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ THE MATH ============ -->
+  <section id="math" class="spread" aria-labelledby="math-head">
+    <div class="wrap">
+      <hr class="rule">
+      <h2 id="math-head" class="display spread-head">Neither sticker was the bill.</h2>
+      <p class="spread-intro">Korean skincare ships from Korea or Hong Kong, and every store draws the line differently: free-shipping thresholds, flat rates, tariff origin. K-Save does this arithmetic for every product, every store, every day. Here it is for the same bottle, twice:</p>
+
+      <div class="receipts">
+        <article class="receipt" aria-label="Store A receipt, worked example">
+          <div class="receipt-head"><strong>Store A</strong><span class="origin-tag">Ships from HK</span></div>
+          <table>
+            <tbody>
+              <tr><td>Item — the sticker you saw</td><td class="price">$13.60</td></tr>
+              <tr><td>Shipping (under the $49 bar)</td><td class="price">$7.99</td></tr>
+              <tr><td>Tariff, 15% HK-origin</td><td class="price">$2.04</td></tr>
+              <tr class="total"><td>Delivered</td><td class="price">$23.63</td></tr>
+            </tbody>
+          </table>
+          <p class="receipt-foot">A $13.60 sticker became a $23.63 bill. The other $10.03 sat below the line.</p>
+        </article>
+
+        <article class="receipt win" aria-label="Store B receipt, worked example">
+          <svg class="stamp seal" data-stamp viewBox="0 0 140 140" role="img" aria-label="Gold seal: true-price winner">
+            <path d="M70 4 79 18 94 9 97 26 114 22 111 39 128 41 119 55 133 63 119 71 128 85 111 87 114 104 97 100 94 117 79 108 70 122 61 108 46 117 43 100 26 104 29 87 12 85 21 71 7 63 21 55 12 41 29 39 26 22 43 26 46 9 61 18Z" fill="#c9a227"/>
+            <circle cx="70" cy="63" r="40" fill="none" stroke="#141414" stroke-width="2"/>
+            <text x="70" y="57" text-anchor="middle" font-family="Anton, sans-serif" font-size="15" fill="#141414">TRUE PRICE</text>
+            <text x="70" y="76" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="9" letter-spacing="1" fill="#141414">WINNER</text>
+          </svg>
+          <div class="receipt-head"><strong>Store B</strong><span class="origin-tag">Ships from KR</span></div>
+          <table>
+            <tbody>
+              <tr><td>Item — the lower sticker</td><td class="price">$9.99</td></tr>
+              <tr><td>Shipping (flat, under the $60 bar)</td><td class="price">$5.00</td></tr>
+              <tr><td>Tariff, KR-origin</td><td class="price">$0.00</td></tr>
+              <tr class="total"><td>Delivered</td><td>
+                <span class="total-figure price">$14.99<svg class="draw" data-draw viewBox="0 0 160 70" preserveAspectRatio="none" aria-hidden="true"><path class="grease" style="--len:420" d="M28 12 C 88 2, 152 10, 150 34 C 148 58, 96 66, 52 60 C 16 55, 4 40, 12 26 C 20 12, 44 8, 74 8"/></svg></span>
+              </td></tr>
+            </tbody>
+          </table>
+          <p class="receipt-foot">Same bottle, <strong class="price">$8.64</strong> less delivered: 37% off the other store's real bill. Even this sticker hid $5.00 of shipping.</p>
+        </article>
+      </div>
+
+      <p class="example-note">Worked example with real store rules, not live prices</p>
+      <p class="display pull">K-Save runs this receipt for every product, across all five stores, before you spend a cent.</p>
+
+      <div class="rules-strip" role="list" aria-label="The five launch stores and their shipping rules">
+        <div class="rule-chip" role="listitem"><strong>StyleVana</strong><span class="mono">Ships from HK<br>Free ship over $49<br>15% tariff applies</span></div>
+        <div class="rule-chip" role="listitem"><strong>YesStyle</strong><span class="mono">Ships from HK<br>Free ship over $49<br>15% tariff applies</span></div>
+        <div class="rule-chip" role="listitem"><strong>Jolse</strong><span class="mono">Ships from KR<br>Free ship over $60<br>No HK tariff</span></div>
+        <div class="rule-chip" role="listitem"><strong>Olive Young Global</strong><span class="mono">Ships from KR<br>Free ship over $35<br>No HK tariff</span></div>
+        <div class="rule-chip" role="listitem"><strong>StyleKorean</strong><span class="mono">Ships from KR<br>Free ship over $60<br>No HK tariff</span></div>
+      </div>
+      <p class="rules-caption">The shipping-and-tariff rulebook K-Save maintains per store, US-normalized. Rules change; the app re-checks daily.</p>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="spread field-blush" aria-labelledby="how-head">
+    <div class="wrap">
+      <hr class="rule">
+      <h2 id="how-head" class="display spread-head">Three taps between you and the real price.</h2>
+      <div class="steps">
+        <div class="step">
+          <p class="no price" aria-hidden="true">1</p>
+          <h3>Search any product</h3>
+          <p>Type a brand or a bottle. The catalog covers the products people actually buy.</p>
+          <svg class="glyph" viewBox="0 0 64 64" role="img" aria-label="Icon: magnifier over a price tag">
+            <circle cx="26" cy="26" r="14"/><path d="M36 36 L50 50"/>
+            <path class="accent" d="M20 22 h9 l5 5 -9 9 -5 -5 Z"/><circle class="accent" cx="23" cy="25" r="1.4"/>
+          </svg>
+        </div>
+        <div class="step">
+          <p class="no price" aria-hidden="true">2</p>
+          <h3>Read one receipt per store</h3>
+          <p>Item + shipping + tariff = delivered. Five stores, same anatomy, best total crowned.</p>
+          <svg class="glyph" viewBox="0 0 64 64" role="img" aria-label="Icon: stacked receipts, the front one crowned">
+            <path d="M18 20 h30 v36 l-5 -4 -5 4 -5 -4 -5 4 -5 -4 -5 4 Z"/>
+            <path d="M24 31 h12 M24 38 h12 M24 45 h8"/>
+            <path class="accent" d="M27 14 l3 -5 3 4 3 -6 3 6 3 -4 v7"/>
+          </svg>
+        </div>
+        <div class="step">
+          <p class="no price" aria-hidden="true">3</p>
+          <h3>Buy from the store itself</h3>
+          <p>One tap out to the winning store. You pay them directly; K-Save never touches checkout.</p>
+          <svg class="glyph" viewBox="0 0 64 64" role="img" aria-label="Icon: arrow leaving a storefront">
+            <path d="M14 26 h28 v24 h-28 Z M14 26 l4 -10 h20 l4 10"/><path d="M24 50 v-12 h8 v12"/>
+            <path class="accent" d="M40 20 h12 m0 0 l-6 -6 m6 6 l-6 6"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROUTINE ============ -->
+  <section class="spread routine" aria-labelledby="routine-head">
+    <div class="wrap">
+      <div>
+        <hr class="rule">
+        <h2 id="routine-head" class="display spread-head">Don't know what to buy? Sixty seconds.</h2>
+        <p class="spread-intro">A short skin quiz (type, concerns, sensitivity) builds a five-step routine from the catalog, each step chosen for how it's positioned for your skin, each priced at its best delivered total. An optional selfie refines the read.</p>
+        <div class="editors-note">
+          <h3>The selfie is analyzed in seconds. Never stored.</h3>
+          <p>It's read once for tone, undertone and visible concerns, then discarded: never stored on our servers, never used to build a profile of your face. Skip it and the quiz alone builds the routine.</p>
+          <span class="corner-stamp" aria-hidden="true">Privacy</span>
+        </div>
+      </div>
+      <div>
+        <ol class="awards" aria-label="The five routine steps">
+          <li><svg class="medal" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="16" r="11" fill="#c9a227"/><circle cx="20" cy="16" r="7.5" fill="none" stroke="#141414" stroke-width="1.6"/><path d="M14 25 10 36 16 33 20 38 24 33 30 36 26 25" fill="#e4002b"/></svg><span class="slot">Cleanser</span><span class="note">picked for your skin type, best delivered price</span></li>
+          <li><svg class="medal" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="16" r="11" fill="#c9a227"/><circle cx="20" cy="16" r="7.5" fill="none" stroke="#141414" stroke-width="1.6"/><path d="M14 25 10 36 16 33 20 38 24 33 30 36 26 25" fill="#e4002b"/></svg><span class="slot">Toner</span><span class="note">matched to your concerns, cheapest real total</span></li>
+          <li><svg class="medal" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="16" r="11" fill="#c9a227"/><circle cx="20" cy="16" r="7.5" fill="none" stroke="#141414" stroke-width="1.6"/><path d="M14 25 10 36 16 33 20 38 24 33 30 36 26 25" fill="#e4002b"/></svg><span class="slot">Serum</span><span class="note">the treatment step, targeted and priced</span></li>
+          <li><svg class="medal" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="16" r="11" fill="#c9a227"/><circle cx="20" cy="16" r="7.5" fill="none" stroke="#141414" stroke-width="1.6"/><path d="M14 25 10 36 16 33 20 38 24 33 30 36 26 25" fill="#e4002b"/></svg><span class="slot">Moisturizer</span><span class="note">barrier first, wallet second; both win</span></li>
+          <li><svg class="medal" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="16" r="11" fill="#c9a227"/><circle cx="20" cy="16" r="7.5" fill="none" stroke="#141414" stroke-width="1.6"/><path d="M14 25 10 36 16 33 20 38 24 33 30 36 26 25" fill="#e4002b"/></svg><span class="slot">Sunscreen</span><span class="note">every routine ends with SPF, at the true price</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARTNERS ============ -->
+  <section class="spread field-ink partners" aria-labelledby="partners-head">
+    <div class="wrap">
+      <hr class="rule" style="border-color:var(--gold)">
+      <h2 id="partners-head" class="display spread-head">For our retail partners.</h2>
+      <div class="grid">
+        <div class="fact"><h3>What K-Save is</h3><p>A comparison engine: a mobile app (iOS &amp; Android) that computes the delivered cost of Korean skincare across five stores and routes ready-to-buy shoppers to the store that wins.</p></div>
+        <div class="fact"><h3>How traffic flows</h3><p>Every product page ends in a click-out to the retailer's own site, affiliate-tracked where a program exists. The retailer owns checkout, payment and fulfilment; K-Save never resells or intermediates.</p></div>
+        <div class="fact"><h3>Where prices come from</h3><p>Network product datafeeds, refreshed daily, normalized to USD, with the shipping-and-tariff rulebook applied per store. Stale feeds are flagged, never silently shown.</p></div>
+        <div class="fact"><h3>Who's on the other end</h3><p>US-based K-beauty buyers: price-sensitive enthusiasts and quiz-led newcomers arriving at the exact moment they've decided what to buy.</p></div>
+      </div>
+      <p class="display pledge">"We earn from some links. Ranking <span class="gold">never</span> considers commission."</p>
+      <p class="partner-names">Launch coverage · StyleVana — YesStyle — Jolse — Olive Young Global — StyleKorean</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <hr class="colophon-rule">
+    <p class="wordmark-s">K-Save <span class="hangul" lang="ko" style="font-size:.85em">케이세이브</span></p>
+    <p>Korean skincare, priced honestly. iOS &amp; Android — launching 2026. Free to use: search, compare and click out without an account.</p>
+    <p class="mono">© 2026 K-Save · Prices on this page are worked examples computed with real store rules, not live quotes · Product renderings are illustrations · We earn from some links; ranking never considers commission.</p>
+  </div>
+</footer>
+
+<script>
+  document.documentElement.classList.add('js');
+  (function(){
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = Array.prototype.slice.call(document.querySelectorAll('[data-draw],[data-stamp]'));
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function(el){ el.classList.add('is-in'); });
+      return;
+    }
+    var pending = els.slice();
+    function markIn(el){
+      el.classList.add('is-in');
+      io.unobserve(el);
+      var i = pending.indexOf(el);
+      if (i > -1) pending.splice(i, 1);
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) markIn(e.target); });
+    }, { threshold: 0.35 });
+    els.forEach(function(el){ io.observe(el); });
+    // Instant jumps (anchor links, fast flicks) can skip IntersectionObserver frames:
+    // anything that ended up above the viewport is revealed immediately.
+    var ticking = false;
+    function sweep(){
+      ticking = false;
+      pending.slice().forEach(function(el){
+        if (el.getBoundingClientRect().bottom < 60) markIn(el);
+      });
+    }
+    addEventListener('scroll', function(){
+      if (!ticking && pending.length) { ticking = true; requestAnimationFrame(sweep); }
+    }, { passive: true });
+  })();
+</script>
+</body>
+</html>
