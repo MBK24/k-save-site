@@ -287,7 +287,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
           <text x="66" y="300" font-family="'Black Han Sans', sans-serif" font-size="19" fill="#141414" transform="rotate(-6 60 300)">진짜 가격 →</text>
           <text x="60" y="322" font-family="Fragment Mono, monospace" font-size="10.5" fill="#141414" transform="rotate(-6 60 306)">the real price</text>
         </svg>
-        <figcaption class="exhibit-caption">Worked example, not a live quote: $13.60 item + $7.99 shipping + $2.04 tariff (15%, ships from HK) = <strong class="price">$23.63</strong> delivered to the US. Bottle is an illustration.</figcaption>
+        <figcaption class="exhibit-caption">Worked example, not a live quote: $13.60 item + $7.99 shipping + $2.04 tariff (15%) = <strong class="price">$23.63</strong> delivered to the US. Bottle is an illustration.</figcaption>
       </figure>
     </div>
   </section>
@@ -297,7 +297,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="wrap">
       <hr class="rule">
       <h2 id="math-head" class="display spread-head">Neither sticker was the bill.</h2>
-      <p class="spread-intro">Korean skincare ships from Korea or Hong Kong, and every store draws the line differently: free-shipping thresholds, flat rates, tariff origin. K-Save does this arithmetic for every product, every store, every day. Here it is for the same bottle, twice:</p>
+      <p class="spread-intro">Korean skincare ships from Korea or Hong Kong, and since the US ended its duty-free exemption, every parcel pays a tariff. Every store still draws the line differently: free-shipping thresholds, flat rates, how the duty lands on your bill. K-Save does this arithmetic for every product, every store, every day. Here it is for the same bottle, twice:</p>
 
       <div class="receipts">
         <article class="receipt" aria-label="Store A receipt, worked example">
@@ -306,7 +306,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             <tbody>
               <tr><td>Item — the sticker you saw</td><td class="price">$13.60</td></tr>
               <tr><td>Shipping (under the $49 bar)</td><td class="price">$7.99</td></tr>
-              <tr><td>Tariff, 15% HK-origin</td><td class="price">$2.04</td></tr>
+              <tr><td>Tariff, 15%</td><td class="price">$2.04</td></tr>
               <tr class="total"><td>Delivered</td><td class="price">$23.63</td></tr>
             </tbody>
           </table>
@@ -325,13 +325,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             <tbody>
               <tr><td>Item — the lower sticker</td><td class="price">$9.99</td></tr>
               <tr><td>Shipping (flat, under the $60 bar)</td><td class="price">$5.00</td></tr>
-              <tr><td>Tariff, KR-origin</td><td class="price">$0.00</td></tr>
+              <tr><td>Tariff, 15%</td><td class="price">$1.50</td></tr>
               <tr class="total"><td>Delivered</td><td>
-                <span class="total-figure price">$14.99<svg class="draw" data-draw viewBox="0 0 160 70" preserveAspectRatio="none" aria-hidden="true"><path class="grease" style="--len:420" d="M28 12 C 88 2, 152 10, 150 34 C 148 58, 96 66, 52 60 C 16 55, 4 40, 12 26 C 20 12, 44 8, 74 8"/></svg></span>
+                <span class="total-figure price">$16.49<svg class="draw" data-draw viewBox="0 0 160 70" preserveAspectRatio="none" aria-hidden="true"><path class="grease" style="--len:420" d="M28 12 C 88 2, 152 10, 150 34 C 148 58, 96 66, 52 60 C 16 55, 4 40, 12 26 C 20 12, 44 8, 74 8"/></svg></span>
               </td></tr>
             </tbody>
           </table>
-          <p class="receipt-foot">Same bottle, <strong class="price">$8.64</strong> less delivered: 37% off the other store's real bill. Even this sticker hid $5.00 of shipping.</p>
+          <p class="receipt-foot">Same bottle, <strong class="price">$7.14</strong> less delivered: 30% off the other store's real bill. Even this sticker hid $6.50 of shipping and duty.</p>
         </article>
       </div>
 
@@ -341,9 +341,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="rules-strip" role="list" aria-label="The five launch stores and their shipping rules">
         <div class="rule-chip" role="listitem"><strong>StyleVana</strong><span class="mono">Ships from HK<br>Free ship over $49<br>15% tariff applies</span></div>
         <div class="rule-chip" role="listitem"><strong>YesStyle</strong><span class="mono">Ships from HK<br>Free ship over $49<br>15% tariff applies</span></div>
-        <div class="rule-chip" role="listitem"><strong>Jolse</strong><span class="mono">Ships from KR<br>Free ship over $60<br>No HK tariff</span></div>
-        <div class="rule-chip" role="listitem"><strong>Olive Young Global</strong><span class="mono">Ships from KR<br>Free ship over $35<br>No HK tariff</span></div>
-        <div class="rule-chip" role="listitem"><strong>StyleKorean</strong><span class="mono">Ships from KR<br>Free ship over $60<br>No HK tariff</span></div>
+        <div class="rule-chip" role="listitem"><strong>Jolse</strong><span class="mono">Ships from KR<br>Free ship over $60<br>15% tariff applies</span></div>
+        <div class="rule-chip" role="listitem"><strong>Olive Young Global</strong><span class="mono">Ships from KR<br>Free ship over $35<br>15% tariff applies</span></div>
+        <div class="rule-chip" role="listitem"><strong>StyleKorean</strong><span class="mono">Ships from KR<br>Free ship over $60<br>15% tariff applies</span></div>
       </div>
       <p class="rules-caption">The shipping-and-tariff rulebook K-Save maintains per store, US-normalized. Rules change; the app re-checks daily.</p>
     </div>
